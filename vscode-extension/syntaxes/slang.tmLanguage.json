@@ -1,0 +1,86 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "slang",
+	"patterns": [
+		{
+			"include": "#comment"
+		},
+		{
+			"include": "#keywords"
+		},
+		{
+			"include": "#strings"
+		},
+		{
+			"include": "#funcs"
+		},
+		{
+			"include": "#types"
+		},
+		{
+			"include": "#constants"
+		},
+		{
+			"include": "#importants"
+		},
+		{
+			"include": "#literals"
+		},
+		{
+			"include": "#restricted"
+		}
+	],
+	"repository": {
+		"comment": {
+			"patterns": [
+				{
+					"begin": "/\\*",
+					"end": "\\*/",
+					"name": "comment.block.slang"
+				}
+			]
+		},
+		"keywords": {
+			"patterns": [{
+				"name": "keyword.control.slang",
+				"match": "\\b(return|begin|end|function|returns|with|else|if|while|into|nothing|set|break|include|foreach|in|pyinclude)\\b"
+			}]
+		},
+		"strings": {
+			"name": "string.quoted.double.slang",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape.slang",
+					"match": "\\\\."
+				}
+			]
+		},
+		"types": {
+			"name":"entity.name.type.slang",
+			"match": "\\b(boolean|integer|string|double|vector|dict)\\b"
+		},
+		"constants": {
+			"name":"constant.character.slang",
+			"match": "\\b(_SPC|_NWL|True|False)\\b"	
+		},
+		"funcs": {
+			"name": "entity.name.function.slang",
+			"match": "\\b(write|equals|input|greater|less|append|inc|dec)\\b"
+		},
+		"importants": {
+			"name": "keyword",
+			"match": "\\b(main)\\b"
+		},
+		"literals": {
+			"name": "keyword.other.unit",
+			"match": "\\b[0-9]\\b"
+		},
+		"restricted": {
+			"name":"invalid.illegal",
+			"match": "\\b(bool|str|int|list|float)\\b"
+		}
+	},
+	"scopeName": "source.slang"
+}

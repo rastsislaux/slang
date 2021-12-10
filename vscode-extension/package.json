@@ -1,0 +1,25 @@
+{
+    "name": "slang-syntax",
+    "displayName": "slang syntax",
+    "description": "",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.62.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "slang",
+            "aliases": ["slang", "slang"],
+            "extensions": [".slang"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "slang",
+            "scopeName": "source.slang",
+            "path": "./syntaxes/slang.tmLanguage.json"
+        }]
+    }
+}
