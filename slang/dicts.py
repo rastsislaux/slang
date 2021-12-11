@@ -1,4 +1,4 @@
-from type import Type
+from slang.type import Type
 
 class Dicts:
 

@@ -1,8 +1,8 @@
-from    dicts   import  Dicts
-from    keyword import  Keyword
-from    type    import  Type
-from    utils   import  Utils
-from    method  import  Method
+from    slang.dicts   import  Dicts
+from    slang.keyword import  Keyword
+from    slang.type    import  Type
+from    slang.utils   import  Utils
+from    slang.method  import  Method
 
 class Translators:
 
@@ -153,10 +153,12 @@ class Translators:
         result = ""
 
         # Refactoring the code
-        source_text = Utils.remove_comments(source_code)
-        source_text = Utils.remove_newlines(source_text)
-        source_text = source_text.split(';')
-        source_text = Utils.strip_lines(source_text)
+
+        source_text = Utils.strip_lines(
+                      Utils.remove_comments(
+                      Utils.remove_newlines(
+                          source_code
+                      )).split(';'))
 
         result += Translators.code(source_text)
 

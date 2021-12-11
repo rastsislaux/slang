@@ -1,5 +1,12 @@
+#! /bin/python3.10
+
+
 import os
 import sys
+
+
+TRANSLATOR_FILE = os.path.dirname(os.path.abspath(__file__))
+STDLIB_PATH = f"{TRANSLATOR_FILE}/slang/slang_stdlib.py"
 
 
 from slang.translators import Translators as t
@@ -12,7 +19,10 @@ def main(args):
     with open(args[1]) as file:
         src = file.read()
 
-    translated = t.main(src)
+    with open(STDLIB_PATH) as file:
+        translated = file.read()
+
+    translated += t.main(src)
 
     if len(args) == 3:
         save_path = args[2]

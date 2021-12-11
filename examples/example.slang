@@ -8,8 +8,6 @@
 
 pyinclude os;
 
-pyinclude slang_stdlib *;
-
 /* You can include Slang modules: */
 
 include method;
