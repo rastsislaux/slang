@@ -43,7 +43,7 @@
 		"keywords": {
 			"patterns": [{
 				"name": "keyword.control.slang",
-				"match": "\\b(return|begin|end|function|returns|with|else|if|while|into|nothing|set|break|include|foreach|in|pyinclude)\\b"
+				"match": "\\b(macro|include|const|end|while|if|fi|again|and|or|xor)\\b"
 			}]
 		},
 		"strings": {
@@ -59,15 +59,15 @@
 		},
 		"types": {
 			"name":"entity.name.type.slang",
-			"match": "\\b(boolean|integer|string|double|vector|dict)\\b"
+			"match": "\\b()\\b"
 		},
 		"constants": {
 			"name":"constant.character.slang",
-			"match": "\\b(_SPC|_NWL|True|False)\\b"	
+			"match": "\\b(True|False)\\b"	
 		},
 		"funcs": {
 			"name": "entity.name.function.slang",
-			"match": "\\b(write|equals|input|greater|less|append|inc|dec)\\b"
+			"match": "\\b(drop|rot|swap|dup|print|peek)\\b"
 		},
 		"importants": {
 			"name": "keyword",
@@ -75,11 +75,7 @@
 		},
 		"literals": {
 			"name": "keyword.other.unit",
-			"match": "\\b[0-9]\\b"
-		},
-		"restricted": {
-			"name":"invalid.illegal",
-			"match": "\\b(bool|str|int|list|float)\\b"
+			"match": "\\b[0-9]*\\b"
 		}
 	},
 	"scopeName": "source.slang"

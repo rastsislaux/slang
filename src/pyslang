@@ -1,0 +1,379 @@
+#! /bin/python3.10
+
+
+# THIS FILE IS A PART OF SLANG INTERPRETATOR.
+# AUTHOR: Rostislav Lipsky (https://github.com/ungaf)
+# DATE: 06.02.2022
+# VISIT https://github.com/ungaf/slang AND READ THE LICENSE BEFORE USING.
+
+
+import re
+import sys
+from enum import Enum, auto
+
+
+macros = {}
+LIBS_PATH = "/home/rostislove/PycharmProjects/rpslang/src/"
+
+
+class Keyword(Enum):
+    IF = auto()
+    WHILE = auto()
+    FI = auto()
+    ELIHW = auto()
+
+
+class Action(Enum):
+    # stack ops
+    DROP = auto()
+    DUP = auto()
+    ROT = auto()
+    REVERSE = auto()
+    SWAP = auto()
+    SIZE = auto()
+
+    # communication with Python
+    PYIMPORT = auto()
+    PYCALL = auto()
+
+    # math ops
+    ADDITION = auto()
+    SUBTRACTION = auto()
+    DIVISION = auto()
+    MULTIPLICATION = auto()
+    REMAINDER = auto()
+    INC = auto()
+    DEC = auto()
+
+    # logical ops
+    NOT = auto()
+    AND = auto()
+    OR = auto()
+    XOR = auto()
+
+    # comparisons
+    LESS = auto()
+    GREATER = auto()
+    EQUAL = auto()
+    GREATEREQUAL = auto()
+    LESSEREQUAL = auto()
+    NOTEQUAL = auto()
+
+class Etc:
+    translations = {
+        # stack ops
+        "drop": Action.DROP,
+        "dup": Action.DUP,
+        "reverse": Action.REVERSE,
+        "swap": Action.SWAP,
+        "rot": Action.ROT,
+        "size": Action.SIZE,
+
+        # communication with Python
+        "pyimport": Action.PYIMPORT,
+        "pycall": Action.PYCALL,
+
+        # math ops
+        "+": Action.ADDITION,
+        "-": Action.SUBTRACTION,
+        "*": Action.MULTIPLICATION,
+        "/": Action.DIVISION,
+        "%": Action.REMAINDER,
+
+        "++": Action.INC,
+        "--": Action.DEC,
+
+        # logical ops
+        "not": Action.NOT,
+        "&": Action.AND,
+        "|": Action.OR,
+        "^": Action.XOR,
+        "and": Action.AND,
+        "or": Action.OR,
+        "xor": Action.XOR,
+
+        # comparisons
+        "<": Action.LESS,
+        ">": Action.GREATER,
+        "=": Action.EQUAL,
+        ">=": Action.GREATEREQUAL,
+        "<=": Action.LESSEREQUAL,
+        "!=": Action.NOTEQUAL,
+
+        # keywords
+        "if": Keyword.IF,
+        "while": Keyword.WHILE,
+        "fi": Keyword.FI,
+        "again": Keyword.ELIHW,
+    }
+
+
+class Macro(str):
+
+    def __repr__(self):
+        return "<Macro: " + super().__str__() + ">"
+
+    def get_name(self):
+        return super().__str__()
+
+
+def unite_string_literals(tokens: list) -> list:
+
+    result = tokens.copy()
+    uniting = None
+
+    i = 0
+    while i < len(result):
+
+        if uniting != None:
+            result[uniting] += ' ' + result.pop(i)
+            i -= 1
+
+        if uniting and result[i][-1] == '"':
+            uniting = None
+
+        if result[i][0] == '"' and result[i][-1] != '"':
+            uniting = i
+
+        i += 1
+
+    return result
+
+
+def comment_remover(text):
+    def replacer(match):
+        s = match.group(0)
+        if s.startswith('/'):
+            return " " # note: a space and not an empty string
+        else:
+            return s
+    pattern = re.compile(
+        r'//.*?$|/\*.*?\*/|\'(?:\\.|[^\\\'])*\'|"(?:\\.|[^\\"])*"',
+        re.DOTALL | re.MULTILINE
+    )
+    return re.sub(pattern, replacer, text)
+
+
+def to_needed_type(token: str):
+
+    result = token
+
+    if token in ["True", "true"]:
+        return True
+    if token in ["False", "false"]:
+        return False
+
+    try:
+        result = int(result)
+        return result
+    except ValueError:
+        pass
+
+    try:
+        result = float(result)
+        return result
+    except ValueError:
+        pass
+
+    if token[0] == '"' and token[-1] == '"':
+
+        token = token.replace("\\n", "\n")
+        token = token.replace("\\r", "\r")
+        token = token.replace("\\t", "\t")
+
+        return token[1:-1]
+
+    if token[-1] == '!':
+        return Macro(token[:-1])
+
+    if not Etc.translations.get(token):
+        raise Exception("Unrecognised word " + token)
+
+    return Etc.translations[token]
+
+
+def run(tokens: list, stack=[]):
+
+    skipping = False
+    while_skipping = False
+    return_to_token = None
+
+    i = 0
+    while i < len(tokens):
+
+        if (skipping or while_skipping) and tokens[i] != Keyword.FI and tokens[i] != Keyword.ELIHW:
+            i += 1
+            continue
+
+        if not isinstance(tokens[i], Action) and not isinstance(tokens[i], Macro) and not isinstance(tokens[i], Keyword):
+            stack.append(tokens[i])
+            i += 1
+            continue
+
+        if isinstance(tokens[i], Macro):
+            run(macros[tokens[i].get_name()], stack)
+            i += 1
+            continue
+
+        match tokens[i]:
+
+            case Action.DROP:
+                stack.pop()
+
+            case Action.DUP:
+                stack.append(stack[-1])
+
+            case Action.DIVISION:
+                stack.append(stack.pop() / stack.pop())
+
+            case Action.ADDITION:
+                stack.append(stack.pop() + stack.pop())
+
+            case Action.MULTIPLICATION:
+                stack.append(stack.pop() * stack.pop())
+
+            case Action.SUBTRACTION:
+                stack.append(stack.pop() - stack.pop())
+
+            case Action.REMAINDER:
+                stack.append(stack.pop() % stack.pop())
+
+            case Action.NOT:
+                stack.append(not stack.pop())
+
+            case Action.OR:
+                stack.append(stack.pop() or stack.pop())
+
+            case Action.XOR:
+                stack.append(stack.pop() ^ stack.pop())
+
+            case Action.AND:
+                stack.append(stack.pop() and stack.pop())
+
+            case Action.REVERSE:
+                stack.reverse()
+
+            case Action.PYIMPORT:
+                exec("import " + stack.pop())
+
+            case Action.PYCALL:
+                stack.append(eval(stack.pop()))
+
+            case Action.SWAP:
+                temp = stack[-1]
+                stack[-1] = stack[-2]
+                stack[-2] = temp
+
+            case Action.ROT:
+                temp = stack[-3]
+                stack[-3] = stack[-1]
+                stack[-1] = temp
+
+            case Action.INC:
+                stack[-1] += 1
+
+            case Action.DEC:
+                stack[-1] -= 1
+
+            case Action.EQUAL:
+                stack.append(stack.pop() == stack.pop())
+
+            case Action.LESS:
+                stack.append(stack.pop() < stack.pop())
+
+            case Action.GREATER:
+                stack.append(stack.pop() > stack.pop())
+
+            case Action.LESSEREQUAL:
+                stack.append(stack.pop() <= stack.pop())
+
+            case Action.GREATEREQUAL:
+                stack.append(stack.pop() >= stack.pop())
+
+            case Action.NOTEQUAL:
+                stack.append(stack.pop() != stack.pop())
+
+            case Keyword.IF:
+                skipping = not bool(stack.pop())
+
+            case Keyword.FI:
+                if skipping:
+                    skipping = False
+
+            case Keyword.WHILE:
+                if bool(stack.pop()):
+                    return_to_token = i
+                else:
+                    return_to_token = None
+                    while_skipping = True
+
+            case Keyword.ELIHW:
+                if while_skipping:
+                    while_skipping = False
+                if return_to_token:
+                    i = return_to_token - 1
+
+        i += 1
+
+def main(args: list):
+
+    if len(args) > 2 and args[1] == "run":
+
+        with open(args[2], 'r') as src_file:
+            src_code = src_file.read()
+
+        src_code = comment_remover(src_code)
+        src_tokens = src_code.split()
+        src_tokens = unite_string_literals(src_tokens)
+
+        # Includes
+        i = 0
+        while i < len(src_tokens):
+
+            if src_tokens[i] == "include":
+                lib = LIBS_PATH + src_tokens[i+1].replace(".", "/") + ".slang"
+
+                with open(lib) as lib_file:
+                    lib_code = lib_file.read()
+
+                lib_code = comment_remover(lib_code)
+                lib_tokens = lib_code.split()
+                lib_tokens = unite_string_literals(lib_tokens)
+
+                src_tokens = src_tokens[0:i] + lib_tokens + src_tokens[i+2:]
+                i -= 1
+
+            i += 1
+
+        # Macros
+        macro = None
+        for i, token in enumerate(src_tokens):
+
+            if token == "macro":
+                macro = src_tokens[i + 1]
+                macros[macro] = []
+
+            if macro:
+                macros[macro].append(token)
+
+            if macro and token == "end":
+                macros[macro] = macros[macro][2:-1]
+                macro = None
+
+        # Consts
+        for i, token in enumerate(src_tokens):
+
+            if token == "const":
+                macros[src_tokens[i+1]] = [src_tokens[i+2]]
+
+        for key in macros.keys():
+            macros[key] = [to_needed_type(token) for token in macros[key]]
+
+        run(macros["main"])
+
+    else:
+        print("Usage:\n\trpsi run [filename]")
+
+
+if __name__ == "__main__":
+    main(sys.argv)
