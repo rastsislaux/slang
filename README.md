@@ -2,6 +2,8 @@
 
 Slang is an interpreted stack-based "programming language".
 
+This project is pathetic parody of [Porth](https://gitlab.com/tsoding/porth) by [Alexey Kutepov](https://www.youtube.com/c/TsodingDaily).
+
 ## Examples
 
 Hello, World:
