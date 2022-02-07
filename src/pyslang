@@ -11,12 +11,11 @@ import re
 import sys
 from enum import Enum, auto
 
+LIBS_PATH = "/home/rostislove/PycharmProjects/rpslang/src/"
+
 modules = []
 macros = {}
 macros_namespaces = {}
-
-LIBS_PATH = "/home/rostislove/PycharmProjects/rpslang/src/"
-
 
 class Keyword(Enum):
     IF = auto()
