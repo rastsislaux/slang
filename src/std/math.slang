@@ -35,19 +35,19 @@ macro std.math.fact
 
 end
 
-macro std.math.sqrt
-    std.types.to-str!
+macro std.math.sqrt using std.types namespaces
+    to-str!
     "math"                      pyimport
     "math.sqrt(" + ")" swap +   pycall
 end
 
-macro std.math.pypow
-    "math"                      pyimport
+macro std.math.pypow using std.types namespaces
+    "math" pyimport
 
-    std.types.to-str!
+    to-str!
     "math.pow(" +
     ", " swap + swap
-    std.types.to-str! swap +
+    to-str! swap +
     ")" swap +
     
     pycall

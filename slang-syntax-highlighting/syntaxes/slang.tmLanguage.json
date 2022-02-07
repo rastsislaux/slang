@@ -1,0 +1,84 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "slang",
+	"patterns": [
+		{
+			"include": "#keywords"
+		},
+		{
+			"include": "#strings"
+		},
+		{
+			"include": "#comment-blocks"
+		},
+		{
+			"include": "#comment-lines"
+		}
+	],
+	"repository": {
+		"keywords": {
+			"patterns": [{
+				"name": "keyword.control.slang",
+				"match": "\\b(if|fi|while|again|end|include|using|namespaces)\\b"
+			},
+			{
+				"name": "constant.other",
+				"match": "\\b(dup|rot|swap|drop|reverse|size|pyimport|pycall)\\b"
+			},
+			{
+				"name": "constant.numeric.slang",
+				"match": "\\b([0-9]+)\\b"
+			},
+			{
+				"name": "constant.language.slang",
+				"match": "\\b(True|true|False|false)\\b"
+			},
+			{
+				"name": "keyword.operator.slang",
+				"match": "\\b(or|and|xor)\\b"
+			},
+			{
+				"name": "storage.type.slang",
+				"match": "\\b(macro|const)\\b"
+			},
+			{
+				"name": "entity.name.function",
+				"match": "([A-Za-z0-9_\\.\\-]+!)"
+			}]
+		},
+		"strings": {
+			"name": "string.quoted.double.slang",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape.slang",
+					"match": "\\\\."
+				}
+			]
+		},
+		"comment-blocks": {
+			"name": "comment.block",
+			"begin": "\\/\\*",
+			"end": "\\*\\/",
+			"patterns": [
+				{
+					"name": "comment.block",
+					"match": "\\\\."
+				}
+			]
+		},
+		"comment-lines": {
+			"name": "comment.line.double-slash",
+			"begin": "\\/\\/",
+			"end": "$",
+			"patterns": [
+				{
+					"name": "comment.line.double-slash",
+					"match": "\\\\."
+				}
+			]
+		}
+	},
+	"scopeName": "source.slang"
+}

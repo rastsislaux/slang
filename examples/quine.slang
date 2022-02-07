@@ -4,21 +4,19 @@
     DATE: 06.02.2022
     VISIT https://github.com/ungaf/slang AND READ THE LICENSE BEFORE USING.
 
-    This program prints all numbers from 1 to 15.
+    This program prints its own source code.
+    Btw pycalls are bad :(
 */
 
-include std.io // adfsdf
-
-const CAP       15
+include std.io
 
 macro main using std.io namespaces
 
-    0 True while
-        ++ dup print!
-        ", " pop!
-        CAP! !=
-    again
-    drop
-    "\n" pop!
-    
+    "open('/home/rostislove/PycharmProjects/rpslang/examples/quine.slang')"
+    pycall
+    "stack.pop().read()"
+    pycall
+
+    popln!
+
 end

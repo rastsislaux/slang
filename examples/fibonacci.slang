@@ -9,16 +9,12 @@
 
 include std.io
 
-const CAP       144
-const print     std.io.print!
-const pop       std.io.pop!
+const CAP 144
 
-macro main
+macro main using std.io namespaces
 
     1 1
-
-    True
-    while
+    True while
         dup rot +
         print! ", " pop!
         dup CAP! >

@@ -11,8 +11,10 @@ import re
 import sys
 from enum import Enum, auto
 
-
+modules = []
 macros = {}
+macros_namespaces = {}
+
 LIBS_PATH = "/home/rostislove/PycharmProjects/rpslang/src/"
 
 
@@ -21,9 +23,12 @@ class Keyword(Enum):
     WHILE = auto()
     FI = auto()
     ELIHW = auto()
+    USE = auto()
+    NAMESPACES = auto()
 
 
 class Action(Enum):
+
     # stack ops
     DROP = auto()
     DUP = auto()
@@ -105,6 +110,8 @@ class Etc:
         "while": Keyword.WHILE,
         "fi": Keyword.FI,
         "again": Keyword.ELIHW,
+        "using": Keyword.USE,
+        "namespaces": Keyword.NAMESPACES
     }
 
 
@@ -154,7 +161,7 @@ def comment_remover(text):
     return re.sub(pattern, replacer, text)
 
 
-def to_needed_type(token: str):
+def to_needed_type(token: str, currentMacro : str):
 
     result = token
 
@@ -180,11 +187,14 @@ def to_needed_type(token: str):
         token = token.replace("\\n", "\n")
         token = token.replace("\\r", "\r")
         token = token.replace("\\t", "\t")
+        token = token.replace("\\\"","\"")
 
         return token[1:-1]
 
+
     if token[-1] == '!':
         return Macro(token[:-1])
+
 
     if not Etc.translations.get(token):
         raise Exception("Unrecognised word " + token)
@@ -192,7 +202,7 @@ def to_needed_type(token: str):
     return Etc.translations[token]
 
 
-def run(tokens: list, stack=[]):
+def run(tokens: list, curMacro: str, stack=[]):
 
     skipping = False
     while_skipping = False
@@ -211,7 +221,21 @@ def run(tokens: list, stack=[]):
             continue
 
         if isinstance(tokens[i], Macro):
-            run(macros[tokens[i].get_name()], stack)
+
+            succ_run = False
+            for namespace in [""] + macros_namespaces[curMacro]:
+                if succ_run:
+                    break
+
+                try:
+                    run(macros[namespace + tokens[i].get_name()], namespace + tokens[i].get_name(), stack)
+                    succ_run = True
+                except KeyError:
+                    pass
+                    
+            if not succ_run:
+                raise Exception("Macro " + tokens[i] + " not found.")
+
             i += 1
             continue
 
@@ -313,6 +337,7 @@ def run(tokens: list, stack=[]):
                 if return_to_token:
                     i = return_to_token - 1
 
+
         i += 1
 
 def main(args: list):
@@ -331,6 +356,7 @@ def main(args: list):
         while i < len(src_tokens):
 
             if src_tokens[i] == "include":
+                modules.append(src_tokens[i+1])
                 lib = LIBS_PATH + src_tokens[i+1].replace(".", "/") + ".slang"
 
                 with open(lib) as lib_file:
@@ -360,6 +386,21 @@ def main(args: list):
                 macros[macro] = macros[macro][2:-1]
                 macro = None
 
+        for key in macros.keys():
+            is_using = True
+            try:
+                macros[key].index("using")
+            except ValueError:
+                is_using = False
+
+            if is_using:
+                n_index = macros[key].index("namespaces")
+
+                macros_namespaces[key] = [nmspc + '.' for nmspc in macros[key][1:n_index]]
+                macros[key] = macros[key][n_index + 1:]
+            else:
+                macros_namespaces[key] = []
+
         # Consts
         for i, token in enumerate(src_tokens):
 
@@ -367,9 +408,9 @@ def main(args: list):
                 macros[src_tokens[i+1]] = [src_tokens[i+2]]
 
         for key in macros.keys():
-            macros[key] = [to_needed_type(token) for token in macros[key]]
+            macros[key] = [to_needed_type(token, key) for token in macros[key]]
 
-        run(macros["main"])
+        run(macros["main"], "main")
 
     else:
         print("Usage:\n\trpsi run [filename]")
