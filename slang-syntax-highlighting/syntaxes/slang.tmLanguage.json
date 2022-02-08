@@ -19,7 +19,7 @@
 		"keywords": {
 			"patterns": [{
 				"name": "keyword.control.slang",
-				"match": "\\b(if|fi|while|again|end|include|using|namespaces)\\b"
+				"match": "\\b(if|fi|end|include|using|namespaces|stop)\\b"
 			},
 			{
 				"name": "entity.name.type",
@@ -35,7 +35,7 @@
 			},
 			{
 				"name": "constant.language.slang",
-				"match": "\\b(True|true|False|false)\\b"
+				"match": "\\b(True|true|False|false|None)\\b"
 			},
 			{
 				"name": "keyword.operator.slang",

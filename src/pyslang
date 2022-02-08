@@ -11,7 +11,7 @@ import re
 import sys
 from enum import Enum, auto
 
-LIBS_PATH = "/home/rostislove/PycharmProjects/rpslang/src/"
+LIBS_PATH = "/home/rostislove/Git/slang/src/"
 
 modules = []
 macros = {}
@@ -23,6 +23,7 @@ class Keyword(Enum):
     USE = auto()
     NAMESPACES = auto()
     GOTO = auto()
+    STOP = auto()
 
 
 class Action(Enum):
@@ -108,7 +109,8 @@ class Etc:
         "fi": Keyword.FI,
         "using": Keyword.USE,
         "namespaces": Keyword.NAMESPACES,
-        "goto": Keyword.GOTO
+        "goto": Keyword.GOTO,
+        "stop": Keyword.STOP
     }
 
 
@@ -185,8 +187,17 @@ def to_needed_type(token: str, currentMacro : str):
     if token in ["False", "false"]:
         return False
 
+    if token == "None":
+        return None
+
     try:
         result = int(result)
+        return result
+    except ValueError:
+        pass
+
+    try:
+        result = int(result, 16)
         return result
     except ValueError:
         pass
@@ -227,6 +238,10 @@ def run(tokens: list, curMacro: str, stack=[]):
     skipping = False
     gotos = {}
 
+    for i, token in enumerate(tokens):
+        if isinstance(token, GotoPoint):
+            gotos[str(token)] = i
+
     i = 0
     while i < len(tokens):
 
@@ -245,7 +260,6 @@ def run(tokens: list, curMacro: str, stack=[]):
             continue
 
         if isinstance(tokens[i], GotoPoint):
-            gotos[str(tokens[i])] = i
             i += 1
             continue
 
@@ -299,13 +313,19 @@ def run(tokens: list, curMacro: str, stack=[]):
                 stack.append(not stack.pop())
 
             case Action.OR:
-                stack.append(stack.pop() or stack.pop())
+                f = stack.pop()
+                s = stack.pop()
+                stack.append(f or s)
 
             case Action.XOR:
-                stack.append(stack.pop() ^ stack.pop())
+                f = stack.pop()
+                s = stack.pop()
+                stack.append(f ^ s)
 
             case Action.AND:
-                stack.append(stack.pop() and stack.pop())
+                f = stack.pop()
+                s = stack.pop()
+                stack.append(f and s)
 
             case Action.REVERSE:
                 stack.reverse()
@@ -356,6 +376,9 @@ def run(tokens: list, curMacro: str, stack=[]):
             case Keyword.FI:
                 if skipping:
                     skipping = False
+
+            case Keyword.STOP:
+                return
 
 
 

@@ -5,6 +5,8 @@
     VISIT https://github.com/ungaf/slang AND READ THE LICENSE BEFORE USING.
 */
 
+include std.types
+
 macro std.io.print
     "print(stack[-1], end='')"
     pycall
@@ -28,4 +30,36 @@ end
 
 macro std.io.input
     "input()" pycall
+end
+
+macro std.io.puts using std.types namespaces
+    to-str!
+    std.io.pop!
+end
+
+macro std.io.putb using std.types namespaces
+    to-bool!
+    std.io.pop!
+end
+
+macro std.io.puti using std.types namespaces
+    to-int!
+    std.io.pop!
+end
+
+macro std.io.putf using std.types namespaces
+    to-float!
+    std.io.pop!
+end
+
+macro std.io.putx using std.types namespaces
+    to-str!
+    "hex(" + ")" swap +   pycall
+    std.io.pop!
+end
+
+macro std.io.putc using std.types namespaces
+    to-str!
+    "chr(" + ")" swap +   pycall
+    std.io.pop!
 end

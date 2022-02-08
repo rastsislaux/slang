@@ -9,39 +9,74 @@ include std.types
 
 macro std.math.pow
 
-    dup dup * rot -- dup 1 !=
-    while
-        rot swap dup rot * rot -- 1 !=
-    again
-    drop
+    // If power == 1, return base
+    swap dup 1 = if
+        drop
+        stop
+    fi swap
+
+    // If power == 0, return 1
+    swap dup 0 = if
+        drop drop 
+        1
+        stop
+    fi swap
+
+    // If power < 0, return None
+    swap dup 0 > if
+        drop drop 
+        None
+        stop
+    fi swap
+
+    dup rot -- True
+    cycle:
+        if
+            rot swap dup rot *
+            rot --
+            dup 0 >= not
+            cycle~
+        fi
+    drop drop
 
 end
 
 macro std.math.fact
 
-    dup 1 >= 
-    if
+    dup 1 = swap dup 0 = swap rot | if
         drop
         1
+        stop
     fi
-    dup 1 <
-    if
-        dup True
-        while
-            -- dup rot * swap dup 1 !=
-        again
+
+    dup 0 > if
         drop
+        None
+        stop
     fi
+
+    dup -- dup rot *
+    cycle:
+        swap dup rot swap
+        1 = not
+        if
+            swap -- dup rot *
+            cycle~
+        fi
+    swap drop
 
 end
 
 macro std.math.sqrt using std.types namespaces
+
     to-str!
     "math"                      pyimport
     "math.sqrt(" + ")" swap +   pycall
+
 end
 
 macro std.math.pypow using std.types namespaces
+
     "math" pyimport
 
     to-str!
@@ -51,4 +86,5 @@ macro std.math.pypow using std.types namespaces
     ")" swap +
     
     pycall
+
 end
