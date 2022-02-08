@@ -2,7 +2,7 @@
 
 Slang is an interpreted stack-based "programming language".
 
-This project is pathetic parody of [Porth](https://gitlab.com/tsoding/porth) by [Alexey Kutepov](https://www.youtube.com/c/TsodingDaily).
+This project is a pathetic parody of [Porth](https://gitlab.com/tsoding/porth) by [Alexey Kutepov](https://www.youtube.com/c/TsodingDaily).
 
 ## Examples
 
@@ -35,7 +35,7 @@ end
 ## Quick start
 Slang is an interpreted "programming language" so you need to configure interpretator before using it. Right now you just need to go to `src/pyslang` and change `LIBS_PATH` const to where you have slang std library. Maybe i'll create a configuration file later.
 
-After you've done configuration, just run `pyslang com [path to program]`.
+After you've done configuration, just run `pyslang run [path to program]`.
 
 ## Language reference
 
