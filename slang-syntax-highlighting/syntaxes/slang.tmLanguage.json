@@ -22,8 +22,12 @@
 				"match": "\\b(if|fi|while|again|end|include|using|namespaces)\\b"
 			},
 			{
+				"name": "entity.name.type",
+				"match": "([A-Za-z0-9_\\.\\-]+(\\~|\\:))"
+			},
+			{
 				"name": "constant.other",
-				"match": "\\b(dup|rot|swap|drop|reverse|size|pyimport|pycall)\\b"
+				"match": "\\b(dup|rot|swap|drop|reverse|size|pyimport|pycall|not)\\b"
 			},
 			{
 				"name": "constant.numeric.slang",

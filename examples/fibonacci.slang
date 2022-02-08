@@ -14,11 +14,11 @@ const CAP 144
 macro main using std.io namespaces
 
     1 1
-    True while
+    cycle:
         dup rot +
         print! ", " pop!
         dup CAP! >
-    again
+        if cycle~ fi
 
     drop drop
     "\n" pop!

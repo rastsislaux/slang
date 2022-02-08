@@ -19,11 +19,10 @@ macros_namespaces = {}
 
 class Keyword(Enum):
     IF = auto()
-    WHILE = auto()
     FI = auto()
-    ELIHW = auto()
     USE = auto()
     NAMESPACES = auto()
+    GOTO = auto()
 
 
 class Action(Enum):
@@ -106,11 +105,10 @@ class Etc:
 
         # keywords
         "if": Keyword.IF,
-        "while": Keyword.WHILE,
         "fi": Keyword.FI,
-        "again": Keyword.ELIHW,
         "using": Keyword.USE,
-        "namespaces": Keyword.NAMESPACES
+        "namespaces": Keyword.NAMESPACES,
+        "goto": Keyword.GOTO
     }
 
 
@@ -118,6 +116,24 @@ class Macro(str):
 
     def __repr__(self):
         return "<Macro: " + super().__str__() + ">"
+
+    def get_name(self):
+        return super().__str__()
+
+
+class GotoPoint(str):
+
+    def __repr__(self):
+        return "<GotoPoint: " + super().__str__() + ">"
+
+    def get_name(self):
+        return super().__str__()
+
+
+class GotoOp(str):
+
+    def __repr__(self):
+        return "<GotoPoint: " + super().__str__() + ">"
 
     def get_name(self):
         return super().__str__()
@@ -138,7 +154,7 @@ def unite_string_literals(tokens: list) -> list:
         if uniting and result[i][-1] == '"':
             uniting = None
 
-        if result[i][0] == '"' and result[i][-1] != '"':
+        if result[i][0] == '"' and (result[i][-1] != '"' or len(result[i]) == 1):
             uniting = i
 
         i += 1
@@ -194,6 +210,11 @@ def to_needed_type(token: str, currentMacro : str):
     if token[-1] == '!':
         return Macro(token[:-1])
 
+    if token[-1] == ':':
+        return GotoPoint(token[:-1])
+
+    if token[-1] == '~':
+        return GotoOp(token[:-1])
 
     if not Etc.translations.get(token):
         raise Exception("Unrecognised word " + token)
@@ -204,19 +225,32 @@ def to_needed_type(token: str, currentMacro : str):
 def run(tokens: list, curMacro: str, stack=[]):
 
     skipping = False
-    while_skipping = False
-    return_to_token = None
+    gotos = {}
 
     i = 0
     while i < len(tokens):
 
-        if (skipping or while_skipping) and tokens[i] != Keyword.FI and tokens[i] != Keyword.ELIHW:
+        if (skipping) and tokens[i] != Keyword.FI:
             i += 1
             continue
 
-        if not isinstance(tokens[i], Action) and not isinstance(tokens[i], Macro) and not isinstance(tokens[i], Keyword):
+        if  not isinstance(tokens[i], Action)       and\
+            not isinstance(tokens[i], Macro)        and\
+            not isinstance(tokens[i], Keyword)      and\
+            not isinstance(tokens[i], GotoOp)       and\
+            not isinstance(tokens[i], GotoPoint):
+
             stack.append(tokens[i])
             i += 1
+            continue
+
+        if isinstance(tokens[i], GotoPoint):
+            gotos[str(tokens[i])] = i
+            i += 1
+            continue
+
+        if isinstance(tokens[i], GotoOp):
+            i = gotos[str(tokens[i])] + 1
             continue
 
         if isinstance(tokens[i], Macro):
@@ -323,18 +357,6 @@ def run(tokens: list, curMacro: str, stack=[]):
                 if skipping:
                     skipping = False
 
-            case Keyword.WHILE:
-                if bool(stack.pop()):
-                    return_to_token = i
-                else:
-                    return_to_token = None
-                    while_skipping = True
-
-            case Keyword.ELIHW:
-                if while_skipping:
-                    while_skipping = False
-                if return_to_token:
-                    i = return_to_token - 1
 
 
         i += 1

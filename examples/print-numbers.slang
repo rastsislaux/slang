@@ -13,12 +13,11 @@ const CAP       15
 
 macro main using std.io namespaces
 
-    0 True while
-        ++ dup print!
-        ", " pop!
-        CAP! !=
-    again
+    0
+    cycle:
+        ++ println! 
+        dup CAP! = not
+        if cycle~ fi
     drop
-    "\n" pop!
-    
+
 end
