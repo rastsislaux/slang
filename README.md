@@ -2,6 +2,8 @@
 
 Slang is an interpreted stack-based "programming language".
 
+This project is a pathetic parody of [Porth](https://gitlab.com/tsoding/porth) by [Alexey Kutepov](https://www.youtube.com/c/TsodingDaily).
+
 ## Examples
 
 Hello, World:
@@ -33,9 +35,11 @@ end
 ## Quick start
 Slang is an interpreted "programming language" so you need to configure interpretator before using it. Right now you just need to go to `src/pyslang` and change `LIBS_PATH` const to where you have slang std library. Maybe i'll create a configuration file later.
 
-After you've done configuration, just run `pyslang com [path to program]`.
+After you've done configuration, just run `pyslang run [path to program]`.
 
-### Language reference
+## Language reference
+
+### Literals
 
 #### Integer
 
@@ -55,7 +59,7 @@ String is a sequence of bytes between two `"`. No newlines are allowed, as Pytho
 Allowed escapes:
  - `\n` - new line
  - `\r` - carriage return
- - '\"` - double quote
+ - `\"` - double quote
 
 When the interpretator encouters a string it is pushed onto the stack.
 
@@ -68,7 +72,7 @@ macro main using std.io namespaces
 end
 ```
 
-The `std.io.popln` macro expects any kind of value on the stack prints it and drops it. (<=> std.io.println! drop)
+The `std.io.popln` macro expects any kind of value on the stack prints it and drops it. (<=> `std.io.println! drop`)
 
 #### Other
 
@@ -81,11 +85,11 @@ Actually, slang can work with any python type though it is not convinient as the
 
 | Name     | Signature         | Description                               |
 | ---      | ---               | ---                                       |
-| 'dup'    | `a -- a a`        | duplicate an element on top of the stack  |
-| 'swap'   | `a b -- b a`      | swap 2 elements on the top of the stack   |
-| 'drop'   | 'a b -- a`        | drops the top element of the stack        |
-| 'rot'    | 'a b c -- c b a`  | rotate the top three stack elements       |
-| 'size'   | 'a -- a s`        | pushes size of stack (int) on top of it   |
+| `dup`    | `a -- a a`        | duplicate an element on top of the stack  |
+| `swap`   | `a b -- b a`      | swap 2 elements on the top of the stack   |
+| `drop`   | `a b -- a`        | drops the top element of the stack        |
+| `rot`    | `a b c -- c b a`  | rotate the top three stack elements       |
+| `size`   | `a -- a s`        | pushes size of stack (int) on top of it   |
 
 #### Comparison
 
@@ -103,7 +107,7 @@ Actually, slang can work with any python type though it is not convinient as the
 | Name          | Signature                             | Description                |
 | ---           | ---                                   | ---                        |
 | `pyimport`    | `b [a: string] -- b`                  | imports a python library   |
-| `pycall`      | `b [a: string] -- b [c: Object]       | calls a python method      |
+| `pycall`      | `b [a: string] -- b [c: Object]`      | calls a python method      |
 
 There are some more but I'm tired of that.
 
@@ -128,7 +132,6 @@ fi
     <condition: bool>
 again
 // -- snip --
-
 ```
 
 #### Include
