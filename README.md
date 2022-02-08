@@ -20,15 +20,14 @@ Simple program that prints numbers from 1 to 15 in an ascending order:
 
 ```slang
 include std.io
-
+const CAP 15
 macro main using std.io namespaces
-    0 True while
-        ++ dup print!
-        ", " pop!
-        15 !=
-    again
+    0
+    cycle:
+        ++ println! 
+        dup CAP! = not
+        if cycle~ fi
     drop
-    "\n" pop!
 end
 ```
 
@@ -123,14 +122,14 @@ fi
 // -- snip --
 ```
 
-#### while-loop
+#### while-loop (currently using goto)
 
 ```slang
 // -- snip --
-<condition: bool> while
+<goto-mark-name>:
     <body>
     <condition: bool>
-again
+    if <goto-mark-name>~ fi
 // -- snip --
 ```
 
