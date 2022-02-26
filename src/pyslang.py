@@ -8,21 +8,12 @@
 
 import sys
 import pickle
-
-from slang import Utils, Interm, Macro, Interpreter
-
-
-def compile_to_bytecode(given_src_code: str):
-    src_code = given_src_code
-    src_code = Utils.remove_comments(src_code) \
-        .split()
-    src_code = Utils.unite_string_literals(src_code)
-    tokens = Interm.parse_tokens(src_code)
-    macros = Macro.generate_macros(tokens)
-    return macros
+import argparse
+from pprint import pprint
+from slang import Compiler, Interpreter
 
 
-def save_pickled(_object, path: str = "out.slangc"):
+def save_pickled(_object, path: str = "out.sx"):
     with open(path, 'wb') as com_file:
         com_file.write(pickle.dumps(_object))
 
@@ -33,33 +24,53 @@ def open_pickled(path: str):
     return macros
 
 
-def main(args: list):
+def parse_args():
+    parser = argparse.ArgumentParser(description=
+                                     """
+                                     pyslang is a slang interpreter. Slang source code files have .slang expansion
+                                     and slang bytecode (compiled programs) have .sx expansion.
+                                     """)
+    parser.add_argument("command",
+                        choices=["run", "com", "exe"],
+                        help="mode (run - interpret, com - compile, exe - execute bytecode)")
+    parser.add_argument("file", type=str, help="path to source code")
+    parser.add_argument("-i", "--intermediate", help="print the intermediate representation", action="store_true")
+    parser.add_argument("-o", "--out", help="path to save compiled file (only with com)",
+                        default="out.sx")
+    return parser.parse_args()
 
-    match args[0]:
+
+def main():
+
+    args = parse_args()
+    match args.command:
 
         case "com":
 
-            with open(args[1], 'r') as src_file:
+            with open(args.file, 'r') as src_file:
                 src_code = src_file.read()
-            macros = compile_to_bytecode(src_code)
-
-            path = "out.slangc"
-            if len(args) > 2:
-                path = args[2]
+            macros = Compiler.compile_to_bytecode(src_code)
+            if args.intermediate:
+                pprint(macros)
+            path = args.out
             save_pickled(macros, path)
 
         case "exe":
 
-            macros = open_pickled(args[1])
+            macros = open_pickled(args.file)
+            if args.intermediate:
+                pprint(macros)
             Interpreter.interpret(macros, "main")
 
         case "run":
 
-            with open(args[1], 'r') as src_file:
+            with open(args.file, 'r') as src_file:
                 src_code = src_file.read()
-            macros = compile_to_bytecode(src_code)
+            macros = Compiler.compile_to_bytecode(src_code)
+            if args.intermediate:
+                pprint(macros)
             Interpreter.interpret(macros, "main")
 
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    main()

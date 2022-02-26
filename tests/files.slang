@@ -12,7 +12,7 @@ from /home/rostislove/Git/slang/src/
     include std.io
     include std.fs
 
-const PATH_TO_FILE "./examples/file-to-open.txt"
+const PATH_TO_FILE "./tests/file-to-open.txt"
 
 macro print-file-contents using std namespaces
     "r" PATH_TO_FILE! fs.file-open!

@@ -14,14 +14,14 @@
 
 from /home/rostislove/Git/slang/src/ include std.io // adfsdf
 
-const CAP       15
+const CAP 15
 
 macro main using std.io namespaces
 
     0
     cycle:
         ++ println! 
-        dup CAP! = not
+        dup CAP! !=
         if cycle~ fi
     drop
 

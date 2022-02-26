@@ -14,7 +14,7 @@ from /home/rostislove/Git/slang/src/
 
 macro main using std namespaces
 
-    "r" "/home/rostislove/Git/slang/examples/quine.slang"
+    "r" "/home/rostislove/Git/slang/tests/quine.slang"
     fs.file-open!
 
     dup fs.reads! io.popln!

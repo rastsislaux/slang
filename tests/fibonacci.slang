@@ -4,23 +4,26 @@
     DATE: 06.02.2022
     VISIT https://github.com/ungaf/slang AND READ THE LICENSE BEFORE USING.
 
-    This program prints fibonacci sequence from 2 to 144.
+    This program prints fibonacci sequence from 2 to 24157817.
 */
 
 from /home/rostislove/Git/slang/src/
     include std.io
 
-const CAP 144
+const CAP 0x90
 
 macro main using std.io namespaces
 
     1 1
     cycle:
         dup rot +
-        print! ", " pop!
+        dup putx!
+        " (" pop! dup puti! ")" pop!
         dup CAP! >
-        if cycle~ fi
-
+        if
+            ", " pop!
+            cycle~
+        fi
     drop drop
     "\n" pop!
     

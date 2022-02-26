@@ -19,17 +19,17 @@ macro main using std.io namespaces
 
     // Nested if statement
     true if
-        "first layer"  println!
-        "first layer2" println!
+        "first layer"  popln!
+        "first layer2" popln!
         False if
-            "second layer"  println!
-            "second layer2" println!
+            "second layer"  popln!
+            "second layer2" popln!
             True if
-                "third layer"  println!
-                "third layer2" println!
+                "third layer"  popln!
+                "third layer2" popln!
             fi
         fi
-        "first layer3" println!
+        "first layer3" popln!
     fi
 
 end

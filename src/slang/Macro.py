@@ -23,7 +23,7 @@ def find_used_macros(macros: list, macro="main") -> list:
                 except KeyError:
                     pass
             if not success:
-                raise NameError(f"Macro \"{macros[name][i].name}\" not found while eliminating dead code.")
+                raise NameError(f"Macro \"{token.name}\" not found while eliminating dead code.")
 
     return used_macros + [macro]
 
