@@ -8,8 +8,9 @@
 
 */
 
-include std.io
-include std.fs
+from /home/rostislove/Git/slang/src/
+    include std.io
+    include std.fs
 
 const PATH_TO_FILE "./examples/file-to-open.txt"
 

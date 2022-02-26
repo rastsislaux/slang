@@ -7,7 +7,8 @@
     Testing goto to any part of macro
 */
 
-include std.io
+from /home/rostislove/Git/slang/src/
+    include std.io
 
 macro main using std.io namespaces
 
@@ -18,7 +19,7 @@ macro main using std.io namespaces
 
     token-to-go-to: // But since interpretator checks for gotos
                     // before running macro it works
-                    
+
     "This should be printed." popln!
 
 end

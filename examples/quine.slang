@@ -5,18 +5,20 @@
     VISIT https://github.com/ungaf/slang AND READ THE LICENSE BEFORE USING.
 
     This program prints its own source code.
-    Btw pycalls are bad :(
+
 */
 
-include std.io
+from /home/rostislove/Git/slang/src/
+    include std.io
+    include std.fs
 
-macro main using std.io namespaces
+macro main using std namespaces
 
-    "open('/home/rostislove/PycharmProjects/rpslang/examples/quine.slang')"
-    pycall
-    "stack.pop().read()"
-    pycall
+    "r" "/home/rostislove/Git/slang/examples/quine.slang"
+    fs.file-open!
 
-    popln!
+    dup fs.reads! io.popln!
+
+    fs.file-close!
 
 end

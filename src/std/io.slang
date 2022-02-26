@@ -8,13 +8,13 @@
 include std.types
 
 macro std.io.print
-    "print(stack[-1], end='')"
+    "" "print(stack[-1], end='')"
     pycall
     drop
 end
 
 macro std.io.println
-    "print(stack[-1])"
+    "" "print(stack[-1])"
     pycall
     drop
 end
@@ -23,13 +23,13 @@ macro std.io.pop    std.io.print!   drop    end
 macro std.io.popln  std.io.println! drop    end
 
 macro std.io.peek
-    "print(stack)"
+    "" "print(stack)"
     pycall
     drop
 end
 
 macro std.io.input
-    "input()" pycall
+    "" "input()" pycall
 end
 
 macro std.io.puts using std.types namespaces
@@ -54,12 +54,12 @@ end
 
 macro std.io.putx using std.types namespaces
     to-str!
-    "hex(" + ")" swap +   pycall
+    "hex(" + ")" swap + "" swap pycall
     std.io.pop!
 end
 
 macro std.io.putc using std.types namespaces
     to-str!
-    "chr(" + ")" swap +   pycall
+    "chr(" + ")" swap + "" swap pycall
     std.io.pop!
 end

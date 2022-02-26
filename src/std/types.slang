@@ -6,21 +6,21 @@
 */
 
 macro std.types.to-str
-    "str(stack.pop())"
+    "" "str(stack.pop())"
     pycall
 end
 
 macro std.types.to-bool
-    "bool(stack.pop())"
+    "" "bool(stack.pop())"
     pycall
 end
 
 macro std.types.to-int
-    "int(stack.pop())"
+    "" "int(stack.pop())"
     pycall
 end
 
 macro std.types.to-float
-    "float(stack.pop())"
+    "" "float(stack.pop())"
     pycall
 end

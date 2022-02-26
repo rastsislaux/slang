@@ -7,7 +7,8 @@
     This program prints fibonacci sequence from 2 to 144.
 */
 
-include std.io
+from /home/rostislove/Git/slang/src/
+    include std.io
 
 const CAP 144
 

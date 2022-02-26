@@ -43,7 +43,7 @@ end
 
 macro std.math.fact
 
-    dup 1 = swap dup 0 = swap rot | if
+    dup 1 = swap dup 0 = swap rot or if
         drop
         1
         stop
@@ -70,20 +70,20 @@ end
 macro std.math.sqrt using std.types namespaces
 
     to-str!
-    "math"                      pyimport
-    "math.sqrt(" + ")" swap +   pycall
+    "math.sqrt(" + ")" swap +
+    "math" swap pycall
 
 end
 
 macro std.math.pypow using std.types namespaces
-
-    "math" pyimport
 
     to-str!
     "math.pow(" +
     ", " swap + swap
     to-str! swap +
     ")" swap +
+
+    "math" swap
     
     pycall
 

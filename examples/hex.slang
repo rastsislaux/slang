@@ -7,7 +7,8 @@
     Testing hexidecimal literals.
 */
 
-include std.io
+from /home/rostislove/Git/slang/src/
+    include std.io
 
 macro main using std.io namespaces
 

@@ -7,8 +7,9 @@
     This is an example of using std.math package.
 */
 
-include std.io
-include std.math
+from /home/rostislove/Git/slang/src/
+    include std.io
+    include std.math
 
 macro main using std.io std.math namespaces
 

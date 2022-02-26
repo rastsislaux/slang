@@ -5,9 +5,14 @@
     VISIT https://github.com/ungaf/slang AND READ THE LICENSE BEFORE USING.
 
     This program prints all numbers from 1 to 15.
+
+    It is also compiled to slang bytecode (print-numbers.sx),
+    you can execute it by running:
+        - pyslang run print-numbers.slang
+        - pyslang exe print-numbers.slangc
 */
 
-include std.io // adfsdf
+from /home/rostislove/Git/slang/src/ include std.io // adfsdf
 
 const CAP       15
 
