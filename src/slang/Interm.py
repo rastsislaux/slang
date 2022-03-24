@@ -93,6 +93,11 @@ def parse_tokens(str_tokens: list) -> list:
             i += 1
             continue
 
+        if str_tokens[i][0] == "$":
+            tokens.append(PushVar(str_tokens[i][1:]))
+            i += 1
+            continue
+
         if str_tokens[i] in slang.Words.t.keys():
             tokens.append(slang.Words.t[str_tokens[i]])
             i += 1
@@ -238,6 +243,18 @@ class OpStop:
 
     def __repr__(self):
         return f"<OpStop>"
+
+    def __str__(self):
+        return self.__repr__()
+
+class PushVar:
+
+    def __init__(self, name):
+        self.name = name
+        self.value = None
+
+    def __repr__(self):
+        return f"<PushVar: {self.name}>"
 
     def __str__(self):
         return self.__repr__()

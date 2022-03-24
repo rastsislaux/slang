@@ -7,7 +7,7 @@
 import slang.Interm
 
 
-def run_intrinsic(stack, intrinsic):
+def run_intrinsic(stack, intrinsic, variables: dict):
 
     match intrinsic:
 
@@ -92,6 +92,19 @@ def run_intrinsic(stack, intrinsic):
         case slang.Words.Intrinsic.DROP:
             stack.pop()
 
+        case slang.Words.Intrinsic.PACK:
+            content = stack.pop()
+            destination = stack.pop()
+            variables[destination.name] = content
+
+        case slang.Words.Intrinsic.UNPACK:
+            target = stack.pop().name
+            stack.append(variables[target])
+
+        case slang.Words.Intrinsic.DELETE:
+            target = stack.pop().name
+            variables.pop(target)
+
         case _:
             raise NotImplementedError(f"Intrinsic <{intrinsic}> not implemented yet.")
 
@@ -99,6 +112,7 @@ def run_intrinsic(stack, intrinsic):
 def interpret(macros: dict, name: str, stack=[]):
 
     goto_points = {}
+    variables = {}
 
     for i, token in enumerate(macros[name]):
         if isinstance(token, slang.Interm.GotoPoint):
@@ -126,8 +140,13 @@ def interpret(macros: dict, name: str, stack=[]):
             i += 1
             continue
 
+        if isinstance(macros[name][i], slang.Interm.PushVar):
+            if (macros[name][i].name not in variables):
+                variables[macros[name][i].name] = macros[name][i].value
+            stack.append(Variable(macros[name][i].name))
+
         if isinstance(macros[name][i], slang.Words.Intrinsic):
-            run_intrinsic(stack, macros[name][i])
+            run_intrinsic(stack, macros[name][i], variables)
             i += 1
             continue
 
@@ -161,6 +180,14 @@ def interpret(macros: dict, name: str, stack=[]):
         i += 1
 
 
+class Variable:
+    def __init__(self, name):
+        self.name = name
 
+    def __repr__(self):
+        return f"<slang.variable: {self.name}>"
+
+    def __str__(self):
+        return self.__repr__()
 
 

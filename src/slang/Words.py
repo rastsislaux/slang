@@ -39,6 +39,10 @@ class Intrinsic(Enum):
 
     PYCALL = auto()
 
+    PACK = auto()
+    UNPACK = auto()
+    DELETE = auto()
+
 
 t = {
     "dup": Intrinsic.DUP,
@@ -67,6 +71,10 @@ t = {
     "!=": Intrinsic.NOTEQUAL,
 
     "pycall": Intrinsic.PYCALL,
+
+    "&": Intrinsic.PACK,
+    "@": Intrinsic.UNPACK,
+    "delete": Intrinsic.DELETE,
 }
 
 
