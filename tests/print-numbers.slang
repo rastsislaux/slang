@@ -12,7 +12,7 @@
         - pyslang exe print-numbers.slangc
 */
 
-from /home/rostislove/Git/slang/src/ include std.io // adfsdf
+from /home/andrey/Programming/slang/src/ include std.io // adfsdf
 
 const CAP 15
 
