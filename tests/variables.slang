@@ -7,9 +7,7 @@
     Introduced variables.
 */
 
-
-from /home/rostislove/Git/slang/src/
-    include std.io
+include std.io
 
 const CAP 15
 

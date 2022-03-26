@@ -8,9 +8,8 @@
 
 */
 
-from /home/rostislove/Git/slang/src/
-    include std.io
-    include std.fs
+include std.io
+include std.fs
 
 macro main using std namespaces
 

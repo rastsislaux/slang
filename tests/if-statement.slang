@@ -7,8 +7,7 @@
     This is an example of using nested if statements.
 */
 
-from /home/rostislove/Git/slang/src/
-    include std.io
+include std.io
 
 macro main using std.io namespaces
 

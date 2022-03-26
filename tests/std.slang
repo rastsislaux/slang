@@ -7,9 +7,7 @@
     Includes from included file work properly (check src/std.slang)
 */
 
-
-from /home/rostislove/Git/slang/src/
-    include std
+include std
 
 macro main
     "Hello, world!" std.types.to-bool! std.io.popln!

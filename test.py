@@ -22,7 +22,6 @@ def run(test: str):
     command = ["src/pyslang.py", "run", f"tests/{test}.slang"]
     sub = subprocess.Popen(command, stdout=subprocess.PIPE)
     text, retcode = sub.stdout.read(), sub.wait()
-    assert retcode == 0
     return text
 
 

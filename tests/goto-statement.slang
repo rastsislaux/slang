@@ -9,8 +9,7 @@
     Testing goto to any part of macro
 */
 
-from /home/rostislove/Git/slang/src/
-    include std.io
+include std.io
 
 macro main using std.io namespaces
 

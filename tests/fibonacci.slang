@@ -7,8 +7,7 @@
     This program prints fibonacci sequence from 2 to 24157817.
 */
 
-from /home/rostislove/Git/slang/src/
-    include std.io
+include std.io
 
 const CAP 0x90
 

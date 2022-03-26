@@ -5,8 +5,7 @@
     VISIT https://github.com/ungaf/slang AND READ THE LICENSE BEFORE USING.
 */
 
-from /home/rostislove/Git/slang/src/
-    include std.types
+include std.types
 
 macro std.math.pow
 

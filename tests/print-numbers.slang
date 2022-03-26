@@ -12,7 +12,7 @@
         - pyslang exe print-numbers.sx
 */
 
-from /home/rostislove/Git/slang/src/ include std.io // adfsdf
+include std.io
 
 const CAP 15
 
