@@ -5,7 +5,7 @@
     VISIT https://github.com/ungaf/slang AND READ THE LICENSE BEFORE USING.
 */
 
-from /home/andrey/Programming/slang/src/
+from /home/rostislove/Git/slang/src/
     include std.types
 
 macro std.io.print

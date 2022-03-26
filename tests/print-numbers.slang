@@ -9,10 +9,10 @@
     It is also compiled to slang bytecode (print-numbers.sx),
     you can execute it by running:
         - pyslang run print-numbers.slang
-        - pyslang exe print-numbers.slangc
+        - pyslang exe print-numbers.sx
 */
 
-from /home/andrey/Programming/slang/src/ include std.io // adfsdf
+from /home/rostislove/Git/slang/src/ include std.io // adfsdf
 
 const CAP 15
 

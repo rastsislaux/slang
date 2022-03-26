@@ -12,9 +12,9 @@ class ParseError(Exception):
     pass
 
 
-def parse_tokens(str_tokens: list) -> list:
+def parse_tokens(str_tokens: list, std_path: str = "~/.slang/") -> list:
     tokens = []
-    path = None
+    path = str
     i = 0
     while i < len(str_tokens):
 

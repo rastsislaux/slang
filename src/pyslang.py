@@ -6,8 +6,9 @@
 # VISIT https://github.com/ungaf/slang AND READ THE LICENSE BEFORE USING.
 
 
-import sys
+import os
 import pickle
+import json
 import argparse
 from pprint import pprint
 from slang import Compiler, Interpreter
@@ -47,9 +48,13 @@ def main():
 
         case "com":
 
+            dir_path = os.path.dirname(os.path.realpath(__file__))
+            with open(dir_path + "/" + "pyslang.json", 'r') as config_file:
+                config = json.loads(config_file.read())
+
             with open(args.file, 'r') as src_file:
                 src_code = src_file.read()
-            macros = Compiler.compile_to_bytecode(src_code)
+            macros = Compiler.compile_to_bytecode(src_code, config["stdlib-path"])
             if args.intermediate:
                 pprint(macros)
             path = args.out
@@ -64,9 +69,13 @@ def main():
 
         case "run":
 
+            dir_path = os.path.dirname(os.path.realpath(__file__))
+            with open(dir_path + "/" + "pyslang.json", 'r') as config_file:
+                config = json.loads(config_file.read())
+
             with open(args.file, 'r') as src_file:
                 src_code = src_file.read()
-            macros = Compiler.compile_to_bytecode(src_code)
+            macros = Compiler.compile_to_bytecode(src_code, config["stdlib-path"])
             if args.intermediate:
                 pprint(macros)
             Interpreter.interpret(macros, "main")
