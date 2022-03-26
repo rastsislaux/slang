@@ -38,7 +38,7 @@ def main():
 
         case "test":
             for test in to_test:
-                with open(f"tests/{test}.out", "rb") as test_out_f:
+                with open(f"tests/out/{test}.out", "rb") as test_out_f:
                     test_out = test_out_f.read()
                 if run(test) == test_out:
                     print(f"[X] {test}")
@@ -48,7 +48,7 @@ def main():
         case "renew":
             for test in to_test:
                 print(f"Test: {test}\n\t - started")
-                with open(f"tests/{test}.out", "wb") as test_out_f:
+                with open(f"tests/out/{test}.out", "wb") as test_out_f:
                     test_out_f.write(run(test))
                 print(f"\t - renewed")
 

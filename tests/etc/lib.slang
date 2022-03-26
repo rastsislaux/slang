@@ -1,0 +1,3 @@
+macro lib.increase
+    ++
+end

@@ -1,0 +1,23 @@
+/*
+    THIS FILE IS A PART OF SLANG EXAMPLES.
+    AUTHOR: Rostislav Lipsky (https://github.com/ungaf)
+    DATE: 07.02.2022
+    VISIT https://github.com/ungaf/slang AND READ THE LICENSE BEFORE USING.
+
+    This program prints its own source code.
+
+*/
+
+include std.io
+include std.fs
+
+macro main using std namespaces
+
+    "r" "/home/rostislove/Git/slang/tests/quine.slang"
+    fs.file-open!
+
+    dup fs.reads! io.popln!
+
+    fs.file-close!
+
+end
