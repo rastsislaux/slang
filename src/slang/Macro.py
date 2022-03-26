@@ -17,6 +17,8 @@ def find_used_macros(macros: list, macro="main") -> list:
             success = False
             for namespace in [""] + [nmspc + "." for nmspc in macros[macro]._namespaces]:
                 try:
+                    if namespace + token.name == macro:
+                        return used_macros + [macro]
                     used_macros += find_used_macros(macros, namespace + token.name)
                     success = True
                     break

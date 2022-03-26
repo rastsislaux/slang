@@ -4,7 +4,7 @@
     DATE: 06.02.2022
     VISIT https://github.com/ungaf/slang AND READ THE LICENSE BEFORE USING.
 
-    This program prints fibonacci sequence from 2 to 24157817.
+    This program prints fibonacci sequence from 2 to 144.
 */
 
 include std.io

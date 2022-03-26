@@ -16,6 +16,7 @@ class Intrinsic(Enum):
     ROT = auto()
     SWAP = auto()
     DROP = auto()
+    OVER = auto()
 
     ADD = auto()
     SUB = auto()
@@ -49,6 +50,7 @@ t = {
     "rot": Intrinsic.ROT,
     "swap": Intrinsic.SWAP,
     "drop": Intrinsic.DROP,
+    "over": Intrinsic.OVER,
 
     "+": Intrinsic.ADD,
     "-": Intrinsic.SUB,

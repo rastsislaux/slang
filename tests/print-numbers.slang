@@ -6,10 +6,10 @@
 
     This program prints all numbers from 1 to 15.
 
-    It is also compiled to slang bytecode (print-numbers.sx),
+    It is also compiled to slang bytecode (etc/print-numbers.sx),
     you can execute it by running:
         - pyslang run print-numbers.slang
-        - pyslang exe print-numbers.sx
+        - pyslang exe etc/print-numbers.sx
 */
 
 include std.io

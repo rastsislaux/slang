@@ -67,6 +67,38 @@ macro std.math.fact
 
 end
 
+macro std.math.abs using std.types namespaces
+    to-str!
+    "math.fabs(" + ")" swap +
+    "math" swap pycall
+end
+
+macro std.math.floor using std.types namespaces
+    to-int!
+end
+
+macro std.math.ceil using std.types namespaces
+    to-int! 1 +
+end
+
+macro std.math.round using std.types namespaces
+    "" "round(stack.pop(), 0)" pycall to-int!
+end
+
+macro std.math.dround
+    // {decimals} {number} std.math.dround!
+    "" "round(stack.pop(), stack.pop())" pycall
+end
+
+macro std.math.log
+    // {base} {a} std.math.log!
+    "math" "math.log(stack.pop(), stack.pop())" pycall
+end
+
+macro std.math.ln
+    "math" "math.log(stack.pop())" pycall
+end
+
 macro std.math.sqrt using std.types namespaces
 
     to-str!

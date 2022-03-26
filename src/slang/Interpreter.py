@@ -92,13 +92,22 @@ def run_intrinsic(stack, intrinsic, variables: dict):
         case slang.Words.Intrinsic.DROP:
             stack.pop()
 
+        case slang.Words.Intrinsic.OVER:
+            stack.append(stack.pop(0))
+
         case slang.Words.Intrinsic.PACK:
             content = stack.pop()
             destination = stack.pop()
+
+            if destination.name not in variables:
+                raise MemoryError("Writing to non-existing variable.")
+
             variables[destination.name] = content
 
         case slang.Words.Intrinsic.UNPACK:
             target = stack.pop().name
+            if target not in variables:
+                raise MemoryError("Reading from non-existing variable.")
             stack.append(variables[target])
 
         case slang.Words.Intrinsic.DELETE:

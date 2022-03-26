@@ -1,5 +1,3 @@
-
-
 /*
     THIS FILE IS A PART OF SLANG EXAMPLES.
     AUTHOR: Rostislav Lipsky (https://github.com/ungaf)
