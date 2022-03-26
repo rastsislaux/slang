@@ -10,6 +10,7 @@
 
 include std.math
 include std.io
+include std.list
 
 const _A    -2.
 const _B    5.
@@ -51,25 +52,29 @@ macro main using std std.io namespaces
     $i _A! &
     $counter 0 &
 
-    None
+    $answers list.new! &
     True while
         $newroot $i @ find-root! round-to-eps! &
-        dup $newroot @ != if
-            $newroot @
+        $newroot @ $answers @ list.contains! not if
+            $newroot @ $answers @ list.append!
             $counter dup @ ++ &
         fi
+
         $i dup @ _STP! + &
+        
         $i @ _B! >=
     do
-    over drop
-
+    $newroot $i delete delete
+    
+    $answers @ dup list.sort! list.reverse!
     "D = {" pop!
-    True while 
-        pop!
+    True while
+        $answers @ list.pop! pop!
         $counter dup @ -- &
-        $counter @ 0 !=
-        dup if ", " pop! fi
+        $counter @ 0 < dup
+        if ", " pop! fi
     do
     "}, where D - set of roots of x^3-5x^2+12" popln!
+
 
 end
