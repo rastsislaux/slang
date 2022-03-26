@@ -151,7 +151,10 @@ def interpret(macros: dict, name: str, stack=[]):
             continue
 
         if isinstance(macros[name][i], slang.Interm.GotoCall):
-            i = goto_points[macros[name][i].name]
+            try:
+                i = goto_points[macros[name][i].name]
+            except:
+                raise KeyError(f"Goto mark named `{macros[name][i].name}` not found.")
             i += 1
             continue
 

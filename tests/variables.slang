@@ -26,4 +26,10 @@ macro main using std.io namespaces
             cycle~
         fi
 
+    $number delete // use `delete` keyword to clear memory
+
+    $hw "Hello, world!" & // variables have a dynamic typing
+    $hw @ popln!
+    $hw delete
+
 end

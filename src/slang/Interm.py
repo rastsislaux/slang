@@ -14,6 +14,7 @@ class ParseError(Exception):
 
 def parse_tokens(str_tokens: list, std_path: str = "~/.slang/") -> list:
     tokens = []
+    while_stack = []
     path = std_path
     i = 0
     while i < len(str_tokens):
@@ -65,6 +66,23 @@ def parse_tokens(str_tokens: list, std_path: str = "~/.slang/") -> list:
 
         if str_tokens[i] == "if":
             tokens.append(IfStart())
+            i += 1
+            continue
+
+        if str_tokens[i] == "while":
+            tokens.append(GotoPoint(f"WHILE_START_{i}"))
+            tokens.append(slang.Words.Intrinsic.NOT)
+            tokens.append(IfStart())
+            tokens.append(GotoCall(f"WHILE_END_{i}"))
+            tokens.append(IfEnd())
+            while_stack.append(i)
+            i += 1
+            continue
+
+        if str_tokens[i] == "do":
+            goto_id = while_stack.pop()
+            tokens.append(GotoCall(f"WHILE_START_{goto_id}"))
+            tokens.append(GotoPoint(f"WHILE_END_{goto_id}"))
             i += 1
             continue
 
@@ -163,6 +181,25 @@ class IfEnd:
 
     def __repr__(self):
         return f"<If: end>"
+
+    def __str__(self):
+        return self.__repr__()
+
+
+
+class WhileStart:
+
+    def __repr__(self):
+        return f"<While: start>"
+
+    def __str__(self):
+        return self.__repr__()
+
+
+class WhileEnd:
+
+    def __repr__(self):
+        return f"<While: end>"
 
     def __str__(self):
         return self.__repr__()
