@@ -5,7 +5,7 @@
 
 
 import slang.Words
-from slang.Utils import remove_comments, unite_string_literals
+from slang.Utils import remove_comments, unite_string_literals, clear_decorative_symbols
 
 
 class ParseError(Exception):
@@ -35,7 +35,9 @@ def parse_tokens(str_tokens: list, std_path: str = "~/.slang/") -> list:
             lib = path + str_tokens[i+1].replace(".", "/") + ".slang"
             with open(lib) as lib_file:
                 lib_code = lib_file.read()
-            lib_code = remove_comments(lib_code).split()
+            lib_code = remove_comments(lib_code)
+            lib_code = clear_decorative_symbols(lib_code)
+            lib_code = lib_code.split()
             lib_code = unite_string_literals(lib_code)
             str_tokens = str_tokens[0:i] + lib_code + str_tokens[i+2:]
             continue

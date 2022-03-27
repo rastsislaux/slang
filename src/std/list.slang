@@ -18,6 +18,10 @@ macro std.list.count
     "" "stack.pop().count()" pycall
 end
 
+macro std.list.size
+    "" "len(stack.pop())" pycall
+end
+
 macro std.list.index
     "" "stack.pop().index(stack.pop())" pycall
 end
@@ -38,6 +42,10 @@ macro std.list.get
     "" "stack.pop()[stack.pop()]" pycall
 end
 
+macro std.list.set
+    "" "stack.pop().__setitem(stack.pop(), stack.pop())" pycall
+end
+
 macro std.list.insert
     // {object} {index} {list} std.list.insert!
     "" "stack.pop().insert(stack.pop(), stack.pop())" pycall drop
@@ -49,4 +57,14 @@ end
 
 macro std.list.sort
     "" "stack.pop().sort()" pycall drop
+end
+
+macro std.list.unpack using std.list namespaces
+    $array swap &
+    $size ($array @)size! &
+
+    ($size @ 0 !=) while
+        ($array @)pop!
+        $size dup @ -- &
+    ($size @ 0 !=) do
 end
