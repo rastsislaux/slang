@@ -122,14 +122,13 @@ fi
 // -- snip --
 ```
 
-#### while-loop (currently using goto)
+#### while-loop
 
 ```slang
 // -- snip --
-<goto-mark-name>:
-    <body>
-    <condition: bool>
-    if <goto-mark-name>~ fi
+<start condition> while
+    ...contents
+<continue condition> do
 // -- snip --
 ```
 
