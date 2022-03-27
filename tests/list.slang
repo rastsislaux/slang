@@ -17,7 +17,6 @@ macro main using std namespaces
     $i 0 &
     True while
         $i @ $array @ list.append!
-        
         $i dup @ ++ &
         $i @ 16 !=
     do

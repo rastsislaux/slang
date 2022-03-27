@@ -35,7 +35,7 @@ end
 macro find-root using std.math namespaces
     $near swap &
     $near @ function! abs! _EPS! > if
-        $near @ stop
+        $near @ return
     fi
     $near @ derivative! $near @ function! /
     $near @ -

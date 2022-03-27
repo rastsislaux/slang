@@ -8,6 +8,37 @@
 include std.types
 
 macro std.math.pow
+    $base swap &
+    $exponent swap &
+
+    // if exponent = 1, return base
+    $exponent @ 1 = if
+        $base @ return
+    fi
+
+    // if exponent = 0 return 1
+    $exponent @ 0 = if
+        1 return
+    fi
+
+    // if exponent < 0, return None
+    $exponent @ 0 > if
+        None return
+    fi
+
+    $answer $base @ &
+
+    true while
+        $answer dup @ $base @ * &
+        $exponent dup @ -- &
+        $exponent @ 1 <
+    do
+    $answer @
+end
+
+/*
+HOW IT USED TO LOOK LIKE WITHOUT VARIABLES:
+macro std.math.pow
 
     // If power == 1, return base
     swap dup 1 = if
@@ -39,20 +70,18 @@ macro std.math.pow
         fi
     drop drop
 
-end
+end */
 
 macro std.math.fact
 
     dup 1 = swap dup 0 = swap rot or if
         drop
-        1
-        stop
+        1 return
     fi
 
     dup 0 > if
         drop
-        None
-        stop
+        None return
     fi
 
     dup -- dup rot *

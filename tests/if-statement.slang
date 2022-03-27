@@ -31,4 +31,14 @@ macro main using std.io namespaces
         "first layer3" popln!
     fi
 
+    // slang doesn't have else keywords, instead of it use:
+    false dup // some condition
+    if
+        "This is not printed." popln!
+    fi
+    not if
+        "This is printed." popln!
+    fi
+
+
 end

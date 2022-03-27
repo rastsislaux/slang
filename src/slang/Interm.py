@@ -91,7 +91,7 @@ def parse_tokens(str_tokens: list, std_path: str = "~/.slang/") -> list:
             i += 1
             continue
 
-        if str_tokens[i] == "stop":
+        if str_tokens[i] == "return":
             tokens.append(OpStop())
             i += 1
             continue

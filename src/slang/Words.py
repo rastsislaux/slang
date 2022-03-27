@@ -8,10 +8,6 @@ from enum import Enum, auto
 
 
 class Intrinsic(Enum):
-    IF = auto()
-    FI = auto()
-    STOP = auto()
-
     DUP = auto()
     ROT = auto()
     SWAP = auto()

@@ -19,7 +19,7 @@
 		"keywords": {
 			"patterns": [{
 				"name": "keyword.control.slang",
-				"match": "\\b(if|fi|end|include|from|using|namespaces|stop|macro|delete|while|do)\\b"
+				"match": "\\b(if|fi|end|include|from|using|namespaces|return|macro|delete|while|do)\\b"
 			},
 			{
 				"name": "entity.name.type",

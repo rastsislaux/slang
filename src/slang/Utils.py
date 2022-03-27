@@ -7,6 +7,19 @@
 import re
 
 
+def clear_decorative_symbols(text):
+    new = ""
+    in_string = False
+    for symbol in text:
+        if symbol == '"':
+            in_string = not in_string
+        if (symbol == ',' or symbol == ')' or symbol == '(') and not in_string:
+            new += ' '
+            continue
+        new += symbol
+    return new
+
+
 def remove_comments(text):
     def replacer(match):
         s = match.group(0)
