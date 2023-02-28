@@ -1,7 +1,7 @@
 /*
     THIS FILE IS A PART OF SLANG EXAMPLES.
     AUTHOR: Rostislav Lipsky (https://github.com/ungaf)
-    DATE: 25.03.2022
+    DATE: 25.03.2023
     VISIT https://github.com/ungaf/slang AND READ THE LICENSE BEFORE USING.
 
     Introduced variables.
